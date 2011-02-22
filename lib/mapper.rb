@@ -23,6 +23,15 @@ class Mapper < Array
     #
     
     @some
+    
+    ##
+    # Alias for #new.
+    # @see {#initialize}
+    #
+    
+    def self.[](*args)
+        self::new(*args)
+    end
 
     ##
     # Constructor.
