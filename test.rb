@@ -1,73 +1,38 @@
 # encoding: utf-8
 # (c) 2011 Martin Kozák (martinkozak@martinkozak.net)
 
-# test suite for 'lemon'
-
 $:.push("./lib")
-covers "mapper"
+require "mapper"
+require "riot"
 
-
-testcase Mapper do
-
-    setup "Mapper" do
-        Mapper::new({:a => :b}, {:c => :d})
-    end
-    
-    unit :some => "returns 'some' reductor" do |mapper|
-        mapper.some.assert.kind_of? Mapper::Some
-    end
-    
-    unit :all => "returns 'all' reductor" do |mapper|
-        mapper.all.assert.kind_of? Mapper::All
-    end
-    
+context "Mapper" do
+    setup { Mapper[{:a => :b}, {:c => :d}] }
+    asserts("returns 'some' reductor") { topic.some.kind_of? Mapper::Some }
+    asserts("returns 'all' reductor") { topic.all.kind_of? Mapper::All }
 end
 
-testcase Mapper::Some do
-    
-    setup "Mapper::Some (default)" do
-        Mapper::new({:a => :b}, {:c => :d}).some
-    end
-    
-    unit :has_key => "existing key (should return true)" do |some|
-        some.has_key?(:a).assert === true
-    end
-
-    unit :has_key => "non-existing key (should return false)" do |some|
-        some.has_key?(:d).assert === false
-    end
-    
-    unit :[] => "non-existing key value (should return nil)" do |some|
-        some[:d].assert === nil
-    end
-    
+context "Mapper::Some (default)" do
+    setup { Mapper[{:a => :b}, {:c => :d}].some }
+    asserts("existing key (should return true)") { topic.has_key?(:a) === true }
+    asserts("non-existing key (should return false)") { topic.has_key?(:d) === false }
+    asserts("non-existing pair under key (should return nil)") { topic[:d] === nil }
 end
 
-testcase Mapper::Some do
-    
-    setup "Mapper::Some (negative condition)" do
-        Mapper::new({:a => :b}, {:c => :d}).some { |v| !v }
+context "Mapper::Some (negative condition, special configuration)" do
+    setup do 
+        h1 = {:a => :b}
+        h2 = {:c => :d}
+        h2.default = :default
+        
+        Mapper[h1, h2].some { |v| !v } 
     end
     
-    unit :[] => "existing key value (should return :d)" do |some|
-        some[:a].assert === :d
-    end
-    
+    asserts("existing key value (should return :default)") { topic[:a] === :default }
 end
 
-testcase Mapper::All do
-    
-    setup "Mapper::All" do
-        Mapper::new({:a => :b}, {:c => :d}).all
-    end
-    
-    unit :[] => "existing key (should return [:b, nil])" do |all|
-        all[:a].assert == [:b, nil]
-    end
-
-    unit :[] => "non-existing key (should return [nil, nil])" do |all|
-        all[:d].assert == [nil, nil]
-    end
-    
+context "Mapper::All" do
+    setup { Mapper::new({:a => :b}, {:c => :d}).all }
+    asserts("existing key (should return [:b, nil])") { topic[:a] == [:b, nil] }
+    asserts("non-existing key (should return [nil, nil])") { topic[:d] == [nil, nil] }
 end
-    
+
