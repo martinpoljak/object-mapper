@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "lib/mapper.rb",
     "lib/mapper/all.rb",
     "lib/mapper/some.rb",
+    "object-mapper.gemspec",
     "test.rb"
   ]
   s.homepage = %q{https://github.com/martinkozak/object-mapper}
