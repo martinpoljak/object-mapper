@@ -19,8 +19,7 @@ For example:
     
 Conditions according which *some* reductor will return value can be 
 changed. (It simply converts returned value of hash to boolean and 
-returns it if conversion is `true`.) Let's make negation of the
-selector:
+returns it if conversion is `true`.) Let's change selector:
 
     hashes.some{ |v| v == :e }[:a]       
     
@@ -28,6 +27,9 @@ selector:
     # is false, so will continue to second and then to third hash where 
     # :a will return :e which is correct and therefore it will 
     # be returned
+
+This example is slightly non-sense for practical use, of sure, but 
+demonstrates how selector works well.
 
 Second available reductor is *all* which simply returns all results of 
 method calls for each hash (in array):
