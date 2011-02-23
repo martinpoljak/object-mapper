@@ -29,10 +29,9 @@ returns it if conversion is `true`.) Let's change selector:
     # be returned
 
 This example is slightly non-sense for practical use, of sure, but 
-demonstrates how selector works well.
-
-Second available reductor is *all* which simply returns all results of 
-method calls for each hash (in array):
+demonstrates how selector works well. Second available reductor is 
+*all* which simply returns all results of method calls for each 
+hash (in array):
 
     hashes.all.has_key? :a          # will return [true, false, true]
 
